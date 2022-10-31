@@ -1,0 +1,20 @@
+import os
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
+slack_token = "<slack_token>"
+client = WebClient(token=slack_token)
+
+# try:
+response = client.conversations_list()
+channel_id = None
+for channel in response['channels']:
+    channel_name = channel['name']
+    if channel_name == "test":
+        channel_id = channel['id']
+        break
+
+response = client.conversations_history(channel = channel_id)
+messages = response['messages']
+for message in messages:
+    print (message['text'])
